@@ -1,0 +1,43 @@
+FORMAT: 1A
+HOST: http://payever.loc/
+
+# Payever api
+
+Payever api for products app
+
+## Products Collection [/{businessId}/products]
+
+### List All Products [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "test": "test",
+            }
+        ]
+
+### Create a New Product [POST]
+
+Description
+
++ Request (application/json)
+
+        {
+            "payload":{
+                "name":"item name",
+                "itemType":"choice"
+            }
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /products/{productId}
+
+    + Body
+
+            {
+                "success":true
+            }
