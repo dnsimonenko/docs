@@ -1,40 +1,209 @@
 FORMAT: 1A
 HOST: http://payever.loc/
 
-# Payever api
+# Payever Catalogue Service API
 
-Payever api for products app
+Payever API for Catalogue Service
 
-## Products Collection [/{businessId}/products]
+## Products Collection [/business/{businessId}/products]
 
-### List All Products [GET]
++ Parameters
+    + businessId: 1 (number) - An unique identifier of Business.
 
-+ Response 200 (application/json)
+### Get Business Products Collection [GET]
 
-        [
-            {
-                "test": "test",
-            }
-        ]
++ Response 200
 
 ### Create a New Product [POST]
-
-Description
-
+```
+Create new product
+Issued with command: CreateProduct
+completed with event: ProductCreated
+```
 + Request (application/json)
 
         {
             "payload":{
-                "name":"item name",
-                "itemType":"choice"
+                "id":"UUID",
+                "type":"choice",
+                "category":[
+                    1,
+                    2
+                ],
+                "tax_class":"choice",
+                "tax_code":"string",
+                "shipping_method":[
+                    1,
+                    2
+                ],
+                "dimensions":{
+                    "x":1,
+                    "y":1,
+                    "z":1
+                },
+                "weight":1,
+                "cross_selling_product":[
+                    1,
+                    2
+                ],
+                "selling_channels":[
+                    1,
+                    2
+                ],
+                "variants":[
+                    {
+                        "name":"string",
+                        "description":"string",
+                        "price":{
+                            "currency":"eur",
+                            "value":"10"
+                        },
+                        "sku":"string",
+                        "quantity":10,
+                        "media":[
+                            {
+                                "id":"UUID",
+                                "filename":"test_filename.jpg",
+                                "context":"catalogue"
+                            },
+                            {
+                                "id":"UUID",
+                                "filename":"test_filename.jpg",
+                                "context":"catalogue"
+                            }
+                        ]
+                    }
+                ]
             }
         }
 
+
 + Response 201 (application/json)
 
-    + Headers
+    + Body
 
-            Location: /products/{productId}
+            {
+                "success":true
+            }
+
+
+## Product [/business/{businessId}/products/{productId}]
+
++ Parameters
+    + businessId: 1 (number) - An unique identifier of Business.
+    + productId: 12ab554e-7224-417f-b314-3e2c76a8f69e (uuid) - An unique identifier of Product.
+
+### Get a Product[GET]
+
++ Response 200
+
+### Update a Product [PUT]
+```
+Update a product
+Issued with command: ChangeProduct
+Completed with event: ProductChanged
+Actually it could be multiple events: ProductPropertiesChanged, CategoryAssignedToProduct, CrossSellingProductAssigned, SellingChannelProductAssigned
+```
++ Request (application/json)
+
+        {
+            "payload":{
+                "id":"UUID",
+                "type":"choice",
+                "category":[
+                    1,
+                    2
+                ],
+                "tax_class":"choice",
+                "tax_code":"string",
+                "shipping_method":[
+                    1,
+                    2
+                ],
+                "dimensions":{
+                    "x":1,
+                    "y":1,
+                    "z":1
+                },
+                "weight":1,
+                "cross_selling_product":[
+                    1,
+                    2
+                ],
+                "selling_channels":[
+                    1,
+                    2
+                ],
+                "variants":[
+                    {
+                        "name":"string",
+                        "description":"string",
+                        "price":{
+                            "currency":"eur",
+                            "value":"10"
+                        },
+                        "sku":"string",
+                        "quantity":10,
+                        "media":[
+                            {
+                                "id":"UUID",
+                                "filename":"test_filename.jpg",
+                                "context":"catalogue"
+                            },
+                            {
+                                "id":"UUID",
+                                "filename":"test_filename.jpg",
+                                "context":"catalogue"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success":true
+            }
+
+### Delete a Product [DELETE]
+```
+Delete a product
+Issued with command: DeleteProduct
+Completed with event: ProductDeleted
+```
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "success":true
+            }
+            
+## Assign Selling Channels to Product [/business/{businessId}/products/{productId}/channels]
+
++ Parameters
+    + businessId: 1 (number) - An unique identifier of Business.
+    + productId: 12ab554e-7224-417f-b314-3e2c76a8f69e (uuid) - An unique identifier of Product.
+
+### Assign Selling Channels to Product [POST]
+```
+Assign Selling Channels to Product
+Issued with command: AssignChannelToProduct
+Completed with event: ChannelAssignedToProduct
+```
++ Request (application/json)
+
+        {
+            "payload":{
+                "selling_channels":[1,2]
+            }
+        }
+        
++ Response 200 (application/json)
 
     + Body
 
